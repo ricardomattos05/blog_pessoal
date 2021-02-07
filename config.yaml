@@ -14,7 +14,7 @@ params:
   author: Ricardo Mattos
   customCss: []
   customJs: []
-  description: Buscando explicações do mundo por meio de dados.
+  description: Enxergando o mundo através dos dados
   doNotLoadAnimations: no
   favicon: favicons/
   images: images/site-feature-image.png
@@ -23,7 +23,7 @@ params:
   math:
     enable: no
     use: katex
-  profilePicture: images/Perfil.jpg
+  profilePicture: images/Perfil.JPG
   simpleAnalytics: {}
   socialIcons:
     - icon: fab fa-linkedin
