@@ -1,4 +1,4 @@
-baseURL: https://example.com
+baseURL: https://ricardomattos05.github.io/
 languageCode: en
 DefaultContentLanguage: en
 title: Blog do Ristat
@@ -37,8 +37,8 @@ params:
       url: https://www.instagram.com/
     - icon: fas fa-envelope
       title: e-mail
-      url: mailto:mail@alexbilz.com
-  title: I'm Jane Doe
+      url: mailto:ricardomattos0512@gmail.com
+  title: Ricardo Mattos
 menu:
   main:
     - identifier: home
