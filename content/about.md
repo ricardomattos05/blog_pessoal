@@ -7,7 +7,8 @@ author: Ricardo Mattos
 date: "2021-02-11"
 description: Resumo Ricardo
 ---
-# Quem sou EU
+
+# Resumo
 
 Me chamo Ricardo, tenho 25 anos e sou natural da Cidade Maravilhosa, Errejota(RJ).Sou Bacharel em Estatística pela Universidade do Estado do Rio de Janeiro(UERJ), apaixonado por futebol, viciado em video-game, séries e filmes. Viajar e me reunir com os amigos para uma cerveja e um bom churrasco estão entre as minhas atividades preferidas.
 
