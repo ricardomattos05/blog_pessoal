@@ -1,7 +1,7 @@
 ---
 title: "Web Scrapping - Dados de jogos do Brasileirão"
 author: "Ricardo Mattos"
-date: "28/06/2020"
+date: '2020-06-28'
 output:
   html_document:
     html_notebook:
@@ -14,6 +14,7 @@ output:
     toc_float: yes
 categories: ["R"]
 tags: ["R Markdown", "Web scrapping", "Brasileirao"]
+thumbnail: images/brasileirao.jpg
 ---
 
 # Introdução
