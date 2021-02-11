@@ -3,26 +3,42 @@ aliases:
 - about-us
 - about-hugo
 - contact
-author: Hugo Authors
-date: "2019-02-28"
-description: Hugo, the world's fastest framework for building websites
-title: About
+author: Ricardo Mattos
+date: "2021-02-11"
+description: Resumo Ricardo
 ---
 
-Written in Go, Hugo is an open source static site generator available under the [Apache Licence 2.0.](https://github.com/gohugoio/hugo/blob/master/LICENSE) Hugo supports TOML, YAML and JSON data file types, Markdown and HTML content files and uses shortcodes to add rich content. Other notable features are taxonomies, multilingual mode, image processing, custom output formats, HTML/CSS/JS minification and support for Sass SCSS workflows.
+Me chamo Ricardo, tenho 25 anos e sou natural da Cidade Maravilhosa, Errejota(RJ).Sou Bacharel em Estatística pela Universidade do Estado do Rio de Janeiro(UERJ), apaixonado por futebol, viciado em video-game, séries e filmes. Viajar e me reunir com os amigos para uma cerveja e um bom churrasco estão entre as minhas atividades preferidas.
 
-Hugo makes use of a variety of open source projects including:
+Atualmente atuo como Data Scientist na CI&T. Daí a ideia de criar esse blog, para compartilhar projetos pessoais e mante-los disponíveis para ajudar outros Cientistas de dados, além de servir como portfólio quando necessário.
 
-* https://github.com/yuin/goldmark
-* https://github.com/alecthomas/chroma
-* https://github.com/muesli/smartcrop
-* https://github.com/spf13/cobra
-* https://github.com/spf13/viper
+# Experiência
 
-Hugo is ideal for blogs, corporate websites, creative portfolios, online magazines, single page applications or even a website with thousands of pages.
+**Data Scientist, CI&T** 
 
-Hugo is for people who want to hand code their own website without worrying about setting up complicated runtimes, dependencies and databases.
+*ago/2020-atualmente*
 
-Websites built with Hugo are extremelly fast, secure and can be deployed anywhere including, AWS, GitHub Pages, Heroku, Netlify and any other hosting provider.
+**Data Scientist e Analytics consultant, Sponsorb**
 
-Learn more and contribute on [GitHub](https://github.com/gohugoio).
+*mar/2020-ago/2020*
+
+**Data Scientist e Analytics analyst, Ibope DTM**
+
+*set/2019-mar/2020*
+
+**Analista de Modelagem, Bradesco Seguros**
+
+*jun/2017-set/2019*
+
+**Estagiário de Pesquisa e Satisfação, Naturgy**
+
+*jun/2016-jun/2017*
+
+**Bolsista Iniciação Científica, IMS-UERJ**
+
+*maio/2015-jun/2016*
+
+# Educação
+
+  * Universidade do Estado do Rio de Janeiro(UERJ) - BS em Estatística, 2018 
+
