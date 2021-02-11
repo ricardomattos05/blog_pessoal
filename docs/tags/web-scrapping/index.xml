@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Web scrapping on Blog do Ristat</title>
+    <link>https://ricardomattos05.github.io/ricardomattos05.github.io/tags/web-scrapping/</link>
+    <description>Recent content in Web scrapping on Blog do Ristat</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language><atom:link href="https://ricardomattos05.github.io/ricardomattos05.github.io/tags/web-scrapping/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Web Scrapping - Dados de jogos do Brasileirão</title>
+      <link>https://ricardomattos05.github.io/ricardomattos05.github.io/post/2021-02-11-brasileirao-data/scraping_brasileirao/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://ricardomattos05.github.io/ricardomattos05.github.io/post/2021-02-11-brasileirao-data/scraping_brasileirao/</guid>
+      <description>IntroduçãoEste post visa fazer uma rápida introdução e exemplificação de web scraping(coleta de dados da internet), resolvendo um problema para muitos estatísticos e/ou aspirantes a data science amantes do principal esporte nacional, o futebol.</description>
+    </item>
+    
+  </channel>
+</rss>
