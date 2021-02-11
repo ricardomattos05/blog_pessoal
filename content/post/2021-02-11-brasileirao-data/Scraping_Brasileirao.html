@@ -1,0 +1,304 @@
+---
+title: "Web Scrapping - Dados de jogos do Brasileirão"
+author: "Ricardo Mattos"
+date: "28/06/2020"
+output:
+  html_document:
+    html_notebook:
+    df_print: paged
+    toc: yes
+    code_folding: hide
+    message: no
+    warning: no
+    number_sections: yes
+    toc_float: yes
+categories: ["R"]
+tags: ["R Markdown", "Web scrapping", "Brasileirao"]
+---
+
+<script src="/ricardomattos05.github.iormarkdown-libs/kePrint/kePrint.js"></script>
+
+
+<div id="introdução" class="section level1">
+<h1>Introdução</h1>
+<p>Este post visa fazer uma rápida introdução e exemplificação de web scraping(coleta de dados da internet), resolvendo um problema para muitos estatísticos e/ou aspirantes a data science amantes do principal esporte nacional, o futebol. É comum ver no início da faculdade, jovens dando os primeiros passos em análise de dados e/ou modelagem buscando por dados de futebol(eu sou o exemplo vivo rs), perdi muito tempo googlando atrás de uma base de jogos estruturadas no início da faculdade. Assim sendo, o objetivo desse paper é ensinar a buscar e estruturar dados de jogos do campeonato brasileiro de 2012 à 2019. que ficará disponível nesse repostirório no meu <strong><a href="https://github.com/ricardomattos05/Scraping_Brasileirao">github</a></strong></p>
+</div>
+<div id="site-da-cbf" class="section level1">
+<h1>Site da CBF</h1>
+<p>O site da <a href="https://www.cbf.com.br">CBF</a> é bem simples e intuitivo, os dados de jogos e os respectivos resultados do campeonato brasileiro podem ser obtidos nesse link <a href="https://www.cbf.com.br/futebol-brasileiro/competicoes/campeonato-brasileiro-serie-a/2019" class="uri">https://www.cbf.com.br/futebol-brasileiro/competicoes/campeonato-brasileiro-serie-a/2019</a>. Observe que no final do link aparece o <code>2019</code> que redireciona para a página do campeonato de 2019.</p>
+<center>
+<br><img src="Imgs/site_CBF_bra2019.png" />
+<small></br>Fonte: <a href="https://www.cbf.com.br/futebol-brasileiro/competicoes/campeonato-brasileiro-serie-a/2019" class="uri">https://www.cbf.com.br/futebol-brasileiro/competicoes/campeonato-brasileiro-serie-a/2019</a></small>
+</br>
+</center>
+<p><br>
+É possível ver que temos disponíveis as tabelas de 2012 à 2020(que ainda não iniciou), e que ao selecionar cada um dos anos disponíveis, a alteração feita na url é somente no último termo como destacado no link da foto, ao qual está com 2019 como valor atual, o que nos leva a página do campeonato de 2019. Temos aqui o primeiro padrão observado. Vamos guardar essa informação mais para frente.
+</br></p>
+<p><br>
+O que queremos são as informações do quadro a direita da tabela de classificação, onde temos as informações das rodadas e resultado dos jogos. A questão aqui é o que estamos buscando. O primeiro passo é inspecionar o html, que a primeira vista parece algo de outro mundo, mas que se olharmos com calma pode ser feito sem muito conhecimento sobre o assunto, eu mesmo não sou especialista no assunto(muito longe disso rs). Para quem quiser entender mais afundo sobre html, existem muitos papers e livros sobre o assunto, um que indico e me ajudou bastante a entender a estrutura foi um tutorial da <a href="https://www.w3schools.com/html/html_intro.asp">w3schools.com</a>. Vamos então avaliar a estrutura do quadro que contém os dados de interesse:
+</br></p>
+<p><br><img src="https://www.fulljoin.com.br/images/html_scraping.gif" /></br></p>
+<p><br>
+Dessa forma conseguimos encontrar padrões e observar a principal classe de interesse <strong>aside-rodadas</strong>, classe a qual engloba todos os dados com informações sobre as rodadas do Brasileirão. Com isso em mente, vamos para o R!
+</br></p>
+</div>
+<div id="indo-para-o-r" class="section level1">
+<h1>Indo para o R</h1>
+<p>Para essa extração, os pacotes necessários são os seguintes: <code>rvest</code>, <code>xml2</code>, <code>stringr</code> e <code>glue</code>.</p>
+<pre class="r"><code>library(stringr)
+library(rvest)
+library(glue)</code></pre>
+<!-- Lembra do termo `2019` que mencionei? Agora é hora de utilizar essa informação. Como destacado esse termo se altera para cada ano do campeonato selecionado, então precisaremos fazer um loop para consultar todos os anos de interesse(2012-2019). -->
+<div id="buscando-e-extraindo-os-dados" class="section level2">
+<h2>Buscando e Extraindo os dados</h2>
+<p>Como mencionado, é possível notar que a classe <strong>aside-rodadas</strong> engloba todos os dados da tabela de jogos, vamos então fazer a leitura desses dados utilizando os pacotes <code>rvest</code> e <code>xml2</code>:</p>
+<pre class="r"><code>url &lt;- glue(&quot;https://www.cbf.com.br/futebol-brasileiro/competicoes/campeonato-brasileiro-serie-a/2019&quot;)
+
+resultados &lt;- url %&gt;% 
+  read_html() %&gt;% 
+  html_nodes(&quot;.aside-rodadas&quot;)
+
+head(resultados)</code></pre>
+<pre><code>## {xml_nodeset (1)}
+## [1] &lt;aside class=&quot;aside-rodadas swiper-container&quot;&gt;&lt;div class=&quot;swiper-wrapper&quot; ...</code></pre>
+<p>Dessa forma, temos a estrutura html da tabela de resultados dos jogos atribuído a lista <code>resultados</code>. precisamos agora extrair as informações que são pertinentes da tabela e estrutura-la para análises posteriores. Os campos que estamos buscando são:</p>
+<blockquote>
+<ul>
+<li><strong>Time Casa</strong>: é possível notar na estrutura que as classes que englobam as siglas dos times da casa são <code>pull-left</code> e <code>time-sigla</code>;</li>
+<li><strong>Time Fora</strong>: para o time de fora, as classes são <code>pull-right</code> e <code>time-sigla</code></li>
+<li><strong>Placar</strong>: por último, mas não menos importante, o placar, que é agrupado pela classe <code>partida-horario</code>.</li>
+</ul>
+</blockquote>
+<p>Sendo assim, conseguimos extrair a partir da estrutura html que atribuímos a <code>resultados</code>, com as classes identificadas, as informações de interesse e estruturar nosso dataframe.</p>
+</div>
+<div id="estruturando-dataframe" class="section level2">
+<h2>Estruturando Dataframe</h2>
+<pre class="r"><code>#Extraindo informações de time da casa
+casa &lt;- resultados %&gt;% 
+  html_nodes(&quot;.pull-left .time-sigla&quot;) %&gt;% 
+  html_text()
+
+#Extraindo informações de time de fora
+fora &lt;- resultados %&gt;% 
+  html_nodes(&quot;.pull-right .time-sigla&quot;) %&gt;% 
+  html_text()
+
+#Extraindo informações de time do placar
+placar &lt;-  resultados %&gt;% 
+            html_nodes(&quot;.partida-horario&quot;) %&gt;%
+             html_text() %&gt;%
+               str_extract(&quot;[0-9]{1}\ x\ [0-9]{1}&quot;)
+
+#Gerando valores de rodadas    
+rodada &lt;- 0:(length(placar)-1) %/% 10 + 1
+
+#Estruturando dados coletados em dataframe
+df &lt;- data.frame(cbind(rodada = rodada,
+                    casa = casa,
+                    placar = placar,
+                    fora = fora,
+                    ano = rep(2019,length(rodada) ) ) )
+
+df %&gt;% 
+  head() %&gt;%
+  knitr::kable() %&gt;% 
+  kableExtra::kable_styling() </code></pre>
+<pre><code>## Warning in kableExtra::kable_styling(.): Please specify format in kable.
+## kableExtra can customize either HTML or LaTeX outputs. See https://
+## haozhu233.github.io/kableExtra/ for details.</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">rodada</th>
+<th align="left">casa</th>
+<th align="left">placar</th>
+<th align="left">fora</th>
+<th align="left">ano</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">1</td>
+<td align="left">SAO</td>
+<td align="left">2 x 0</td>
+<td align="left">BOT</td>
+<td align="left">2019</td>
+</tr>
+<tr class="even">
+<td align="left">1</td>
+<td align="left">ATL</td>
+<td align="left">2 x 1</td>
+<td align="left">AVA</td>
+<td align="left">2019</td>
+</tr>
+<tr class="odd">
+<td align="left">1</td>
+<td align="left">CHA</td>
+<td align="left">2 x 0</td>
+<td align="left">INT</td>
+<td align="left">2019</td>
+</tr>
+<tr class="even">
+<td align="left">1</td>
+<td align="left">FLA</td>
+<td align="left">3 x 1</td>
+<td align="left">CRU</td>
+<td align="left">2019</td>
+</tr>
+<tr class="odd">
+<td align="left">1</td>
+<td align="left">GRE</td>
+<td align="left">1 x 2</td>
+<td align="left">SAN</td>
+<td align="left">2019</td>
+</tr>
+<tr class="even">
+<td align="left">1</td>
+<td align="left">CEA</td>
+<td align="left">4 x 0</td>
+<td align="left">CSA</td>
+<td align="left">2019</td>
+</tr>
+</tbody>
+</table>
+<p>E voìla! Temos um um dataframe dos jogos do brasileirão, extraído diretamente do site da CBF.</p>
+<p><br><img src="https://media.tenor.com/images/e51f4b0cfdef4203774fff000f98b818/tenor.gif" /></br></p>
+<p><br> Porém, isso não é tudo, lembra que falei para guardar a informação da mudança no link ao selecionar o ano do campeonato? Então, agora é a hora de utilizar essa informação! </br></p>
+<p>Faremos um loop utilizando o auxílio do pacote glue para alterar o ano da url e faremos um incremento dos dados na tabela final para termos os dados de todos os jogos dos campeonatos desde 2012.</p>
+<pre class="r"><code>for(i in 2012:2019) {
+  
+url &lt;- glue(&quot;https://www.cbf.com.br/futebol-brasileiro/competicoes/campeonato-brasileiro-serie-a/{i}&quot;)
+
+
+resultados &lt;- url %&gt;% 
+  read_html() %&gt;% 
+  html_nodes(&quot;.aside-rodadas&quot;)
+
+casa &lt;- resultados %&gt;% 
+  html_nodes(&quot;.pull-left .time-sigla&quot;) %&gt;% 
+  html_text()
+
+
+fora &lt;- resultados %&gt;% 
+  html_nodes(&quot;.pull-right .time-sigla&quot;) %&gt;% 
+  html_text()
+
+
+placar &lt;-  resultados %&gt;% 
+            html_nodes(&quot;.partida-horario&quot;) %&gt;%
+             html_text() %&gt;%
+               str_extract(&quot;[0-9]{1}\ x\ [0-9]{1}&quot;)
+    
+rodada &lt;- 0:(length(placar)-1) %/% 10 + 1
+
+df &lt;- if( i == 2012)
+          { 
+       
+              data.frame(cbind(rodada = rodada,
+                  casa = casa,
+                  placar = placar,
+                  fora = fora,
+                  ano = rep(i,length(rodada) ) ) ) }
+          else{
+
+              data.frame(rbind(df, cbind(rodada = rodada,
+                  casa = casa,
+                  placar = placar,
+                  fora = fora,
+                  ano = rep(i,length(rodada) ) ) ))
+}
+ 
+
+}
+
+# write.csv(df, &quot;Brasileirao_Jogos_2012_2019.csv&quot;) #salvando df
+
+
+summary(df) %&gt;% 
+  knitr::kable() %&gt;% 
+  kableExtra::kable_styling() </code></pre>
+<table class="table" style="margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+</th>
+<th style="text-align:left;">
+rodada
+</th>
+<th style="text-align:left;">
+casa
+</th>
+<th style="text-align:left;">
+placar
+</th>
+<th style="text-align:left;">
+fora
+</th>
+<th style="text-align:left;">
+ano
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+Length:3040
+</td>
+<td style="text-align:left;">
+Length:3040
+</td>
+<td style="text-align:left;">
+Length:3040
+</td>
+<td style="text-align:left;">
+Length:3040
+</td>
+<td style="text-align:left;">
+Length:3040
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+Class :character
+</td>
+<td style="text-align:left;">
+Class :character
+</td>
+<td style="text-align:left;">
+Class :character
+</td>
+<td style="text-align:left;">
+Class :character
+</td>
+<td style="text-align:left;">
+Class :character
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+Mode :character
+</td>
+<td style="text-align:left;">
+Mode :character
+</td>
+<td style="text-align:left;">
+Mode :character
+</td>
+<td style="text-align:left;">
+Mode :character
+</td>
+<td style="text-align:left;">
+Mode :character
+</td>
+</tr>
+</tbody>
+</table>
+<p>E dessa forma temos o nosso df estruturado com os jogos dos Brasileirões de 2012 a 2019. Até a próxima!</p>
+</div>
+</div>
