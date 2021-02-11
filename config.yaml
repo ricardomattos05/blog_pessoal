@@ -16,7 +16,7 @@ params:
   customJs: []
   description: Enxergando o mundo através dos dados
   doNotLoadAnimations: no
-  favicon: favicons/favicon_rstat.ico
+  favicon: favicons/
   images: images/site-feature-image.png
   keywords: ''
   mainSections: post
