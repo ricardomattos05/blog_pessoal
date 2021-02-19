@@ -1,16 +1,18 @@
 ---
-title: "Desafio Intro ML - Curso-R"
+title: "Desafio Kaggle Curso-R - Tidymodels"
 author: "Ricardo Mattos"
-date: "12/07/2020"
+date: "2020-07-12"
 output:
   html_document:
     toc: yes
     toc_float: yes
     number_sections: yes
-  html_notebook:
-    toc: yes
-    toc_float: yes
-    number_sections: yes
+    hide: yes
+    message: no
+    warning: no
+categories: ["R", "Machine Learning"]
+tags: ["R Markdown", "Machine Learning", "Tidymodels"]
+thumbnail: images/tidymodels.jpg
 ---
 
 
@@ -990,11 +992,11 @@ adult_tree</code></pre>
 )
 
 workflow_tree_final</code></pre>
-<pre><code>## == Workflow =====================================================================
+<pre><code>## == Workflow ========================================================
 ## Preprocessor: Recipe
 ## Model: decision_tree()
 ## 
-## -- Preprocessor -----------------------------------------------------------------
+## -- Preprocessor ----------------------------------------------------
 ## 7 Recipe Steps
 ## 
 ## * step_mutate()
@@ -1005,7 +1007,7 @@ workflow_tree_final</code></pre>
 ## * step_novel()
 ## * step_dummy()
 ## 
-## -- Model ------------------------------------------------------------------------
+## -- Model -----------------------------------------------------------
 ## Decision Tree Model Specification (classification)
 ## 
 ## Main Arguments:
@@ -1097,11 +1099,11 @@ adult_rf</code></pre>
 )
 
 workflow_rf_final</code></pre>
-<pre><code>## == Workflow =====================================================================
+<pre><code>## == Workflow ========================================================
 ## Preprocessor: Recipe
 ## Model: rand_forest()
 ## 
-## -- Preprocessor -----------------------------------------------------------------
+## -- Preprocessor ----------------------------------------------------
 ## 7 Recipe Steps
 ## 
 ## * step_mutate()
@@ -1112,7 +1114,7 @@ workflow_rf_final</code></pre>
 ## * step_novel()
 ## * step_dummy()
 ## 
-## -- Model ------------------------------------------------------------------------
+## -- Model -----------------------------------------------------------
 ## Random Forest Model Specification (classification)
 ## 
 ## Main Arguments:
@@ -1173,11 +1175,11 @@ adult_xgb</code></pre>
   add_model(adult_xgb)
 
 workflow_adult_xgb</code></pre>
-<pre><code>## == Workflow =====================================================================
+<pre><code>## == Workflow ========================================================
 ## Preprocessor: Recipe
 ## Model: boost_tree()
 ## 
-## -- Preprocessor -----------------------------------------------------------------
+## -- Preprocessor ----------------------------------------------------
 ## 7 Recipe Steps
 ## 
 ## * step_mutate()
@@ -1188,7 +1190,7 @@ workflow_adult_xgb</code></pre>
 ## * step_novel()
 ## * step_dummy()
 ## 
-## -- Model ------------------------------------------------------------------------
+## -- Model -----------------------------------------------------------
 ## Boosted Tree Model Specification (classification)
 ## 
 ## Main Arguments:
@@ -1246,11 +1248,11 @@ workflow_adult_xgb</code></pre>
 )
 
 workflow_xgb_final</code></pre>
-<pre><code>## == Workflow =====================================================================
+<pre><code>## == Workflow ========================================================
 ## Preprocessor: Recipe
 ## Model: boost_tree()
 ## 
-## -- Preprocessor -----------------------------------------------------------------
+## -- Preprocessor ----------------------------------------------------
 ## 7 Recipe Steps
 ## 
 ## * step_mutate()
@@ -1261,7 +1263,7 @@ workflow_xgb_final</code></pre>
 ## * step_novel()
 ## * step_dummy()
 ## 
-## -- Model ------------------------------------------------------------------------
+## -- Model -----------------------------------------------------------
 ## Boosted Tree Model Specification (classification)
 ## 
 ## Main Arguments:
@@ -1365,11 +1367,11 @@ adult_xgb2</code></pre>
 )
 
 workflow_xgb_final2</code></pre>
-<pre><code>## == Workflow =====================================================================
+<pre><code>## == Workflow ========================================================
 ## Preprocessor: Recipe
 ## Model: boost_tree()
 ## 
-## -- Preprocessor -----------------------------------------------------------------
+## -- Preprocessor ----------------------------------------------------
 ## 7 Recipe Steps
 ## 
 ## * step_mutate()
@@ -1380,7 +1382,7 @@ workflow_xgb_final2</code></pre>
 ## * step_novel()
 ## * step_dummy()
 ## 
-## -- Model ------------------------------------------------------------------------
+## -- Model -----------------------------------------------------------
 ## Boosted Tree Model Specification (classification)
 ## 
 ## Main Arguments:

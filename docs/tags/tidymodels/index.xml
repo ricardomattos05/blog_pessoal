@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Tidymodels on Blog do Ristat</title>
+    <link>https://ricardomattos05.github.io/ricardomattos05.github.io/tags/tidymodels/</link>
+    <description>Recent content in Tidymodels on Blog do Ristat</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Sun, 12 Jul 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://ricardomattos05.github.io/ricardomattos05.github.io/tags/tidymodels/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Desafio Kaggle Curso-R - Tidymodels</title>
+      <link>https://ricardomattos05.github.io/ricardomattos05.github.io/post/2021-02-14-desafio-ml-cursor/notebook_kaggle_cursor_ml/</link>
+      <pubDate>Sun, 12 Jul 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://ricardomattos05.github.io/ricardomattos05.github.io/post/2021-02-14-desafio-ml-cursor/notebook_kaggle_cursor_ml/</guid>
+      <description>ObjetivoO objetivo desse notebook é efetuar todo o processo de modelagem da base de dados adult, disponibilizada para o desafio do curso de introdução ao Machine Learning da Curso-R, utilizando o framework tidymodels.</description>
+    </item>
+    
+  </channel>
+</rss>

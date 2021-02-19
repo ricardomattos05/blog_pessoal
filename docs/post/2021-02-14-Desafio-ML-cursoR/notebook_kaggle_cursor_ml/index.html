@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" data-theme=""><head>
-    <title> Ricardo Mattos | Desafio Intro ML - Curso-R </title>
+    <title> Ricardo Mattos | Desafio Kaggle Curso-R - Tidymodels </title>
 
     
     <meta charset="utf-8"><meta name="generator" content="Hugo 0.80.0" /><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
@@ -52,7 +52,7 @@
     <meta name="twitter:card" content="summary_large_image"/>
 <meta name="twitter:image" content="https://ricardomattos05.github.io/ricardomattos05.github.io/105"/>
 
-<meta name="twitter:title" content="Desafio Intro ML - Curso-R"/>
+<meta name="twitter:title" content="Desafio Kaggle Curso-R - Tidymodels"/>
 <meta name="twitter:description" content="ObjetivoO objetivo desse notebook é efetuar todo o processo de modelagem da base de dados adult, disponibilizada para o desafio do curso de introdução ao Machine Learning da Curso-R, utilizando o framework tidymodels."/>
 
 </head>
@@ -147,12 +147,14 @@
     <div class="post  animated fadeInDown ">
         <div class="post-content">
             
+            <img class="post-thumbnail" src="https://ricardomattos05.github.io/ricardomattos05.github.io/images/tidymodels.jpg" alt="Thumbnail image">
+            
             <div class="post-title">
-                <h3>Desafio Intro ML - Curso-R</h3>
+                <h3>Desafio Kaggle Curso-R - Tidymodels</h3>
                 
                     <div class="info">
                         <em class="fas fa-calendar-day"></em>
-                        <span class="date"> Mon, Jan 1, 0001 
+                        <span class="date"> Sun, Jul 12, 2020 
                                            </span>
                         <em class="fas fa-stopwatch"></em>
                         <span class="reading-time">15-minute read</span>
@@ -1138,11 +1140,11 @@ adult_tree</code></pre>
 )
 
 workflow_tree_final</code></pre>
-<pre><code>## == Workflow =====================================================================
+<pre><code>## == Workflow ========================================================
 ## Preprocessor: Recipe
 ## Model: decision_tree()
 ## 
-## -- Preprocessor -----------------------------------------------------------------
+## -- Preprocessor ----------------------------------------------------
 ## 7 Recipe Steps
 ## 
 ## * step_mutate()
@@ -1153,7 +1155,7 @@ workflow_tree_final</code></pre>
 ## * step_novel()
 ## * step_dummy()
 ## 
-## -- Model ------------------------------------------------------------------------
+## -- Model -----------------------------------------------------------
 ## Decision Tree Model Specification (classification)
 ## 
 ## Main Arguments:
@@ -1245,11 +1247,11 @@ adult_rf</code></pre>
 )
 
 workflow_rf_final</code></pre>
-<pre><code>## == Workflow =====================================================================
+<pre><code>## == Workflow ========================================================
 ## Preprocessor: Recipe
 ## Model: rand_forest()
 ## 
-## -- Preprocessor -----------------------------------------------------------------
+## -- Preprocessor ----------------------------------------------------
 ## 7 Recipe Steps
 ## 
 ## * step_mutate()
@@ -1260,7 +1262,7 @@ workflow_rf_final</code></pre>
 ## * step_novel()
 ## * step_dummy()
 ## 
-## -- Model ------------------------------------------------------------------------
+## -- Model -----------------------------------------------------------
 ## Random Forest Model Specification (classification)
 ## 
 ## Main Arguments:
@@ -1321,11 +1323,11 @@ adult_xgb</code></pre>
   add_model(adult_xgb)
 
 workflow_adult_xgb</code></pre>
-<pre><code>## == Workflow =====================================================================
+<pre><code>## == Workflow ========================================================
 ## Preprocessor: Recipe
 ## Model: boost_tree()
 ## 
-## -- Preprocessor -----------------------------------------------------------------
+## -- Preprocessor ----------------------------------------------------
 ## 7 Recipe Steps
 ## 
 ## * step_mutate()
@@ -1336,7 +1338,7 @@ workflow_adult_xgb</code></pre>
 ## * step_novel()
 ## * step_dummy()
 ## 
-## -- Model ------------------------------------------------------------------------
+## -- Model -----------------------------------------------------------
 ## Boosted Tree Model Specification (classification)
 ## 
 ## Main Arguments:
@@ -1394,11 +1396,11 @@ workflow_adult_xgb</code></pre>
 )
 
 workflow_xgb_final</code></pre>
-<pre><code>## == Workflow =====================================================================
+<pre><code>## == Workflow ========================================================
 ## Preprocessor: Recipe
 ## Model: boost_tree()
 ## 
-## -- Preprocessor -----------------------------------------------------------------
+## -- Preprocessor ----------------------------------------------------
 ## 7 Recipe Steps
 ## 
 ## * step_mutate()
@@ -1409,7 +1411,7 @@ workflow_xgb_final</code></pre>
 ## * step_novel()
 ## * step_dummy()
 ## 
-## -- Model ------------------------------------------------------------------------
+## -- Model -----------------------------------------------------------
 ## Boosted Tree Model Specification (classification)
 ## 
 ## Main Arguments:
@@ -1513,11 +1515,11 @@ adult_xgb2</code></pre>
 )
 
 workflow_xgb_final2</code></pre>
-<pre><code>## == Workflow =====================================================================
+<pre><code>## == Workflow ========================================================
 ## Preprocessor: Recipe
 ## Model: boost_tree()
 ## 
-## -- Preprocessor -----------------------------------------------------------------
+## -- Preprocessor ----------------------------------------------------
 ## 7 Recipe Steps
 ## 
 ## * step_mutate()
@@ -1528,7 +1530,7 @@ workflow_xgb_final2</code></pre>
 ## * step_novel()
 ## * step_dummy()
 ## 
-## -- Model ------------------------------------------------------------------------
+## -- Model -----------------------------------------------------------
 ## Boosted Tree Model Specification (classification)
 ## 
 ## Main Arguments:
@@ -1655,8 +1657,10 @@ adult_val$more_than_50k &lt;-
 </div>
         <div class="post-footer">
             <div class="info">
-                
-                
+                <span class="separator"><a class="category" href="/ricardomattos05.github.io/categories/r/">R</a><a class="category" href="/ricardomattos05.github.io/categories/machine-learning/">Machine Learning</a></span>
+
+                <span class="separator"><a class="tag" href="/ricardomattos05.github.io/tags/r-markdown/">R Markdown</a><a class="tag" href="/ricardomattos05.github.io/tags/machine-learning/">Machine Learning</a><a class="tag" href="/ricardomattos05.github.io/tags/tidymodels/">Tidymodels</a></span>
+
             </div>
         </div>
 
