@@ -1,0 +1,1506 @@
+---
+title: "Desafio Intro ML - Curso-R"
+author: "Ricardo Mattos"
+date: "12/07/2020"
+output:
+  html_document:
+    toc: yes
+    toc_float: yes
+    number_sections: yes
+  html_notebook:
+    toc: yes
+    toc_float: yes
+    number_sections: yes
+---
+
+
+
+<div id="objetivo" class="section level1">
+<h1>Objetivo</h1>
+<p>O objetivo desse notebook é efetuar todo o processo de modelagem da base de dados <code>adult</code>, disponibilizada para o desafio do curso de introdução ao Machine Learning da Curso-R, utilizando o framework <code>tidymodels</code>. Ou seja, explorar, tratar, preparar, tunnar e escolher o modelo que melhor se ajusta aos dados disponibilizados.</p>
+</div>
+<div id="leitura-da-base" class="section level1">
+<h1>Leitura da base</h1>
+<div id="informações-preliminares" class="section level2">
+<h2>Informações preliminares</h2>
+<pre class="r"><code>adult &lt;- read_rds(&quot;adult.rds&quot;)
+
+# head(adult) 
+
+# glimpse(adult)
+skim(adult)</code></pre>
+<table style='width: auto;'
+        class='table table-condensed'>
+<caption>
+<span id="tab:unnamed-chunk-1">Table 1: </span>Data summary
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+</th>
+<th style="text-align:left;">
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Name
+</td>
+<td style="text-align:left;">
+adult
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Number of rows
+</td>
+<td style="text-align:left;">
+32561
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Number of columns
+</td>
+<td style="text-align:left;">
+16
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+_______________________
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Column type frequency:
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+character
+</td>
+<td style="text-align:left;">
+9
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+numeric
+</td>
+<td style="text-align:left;">
+7
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+________________________
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Group variables
+</td>
+<td style="text-align:left;">
+None
+</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Variable type: character</strong></p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left;">
+skim_variable
+</th>
+<th style="text-align:right;">
+n_missing
+</th>
+<th style="text-align:right;">
+complete_rate
+</th>
+<th style="text-align:right;">
+min
+</th>
+<th style="text-align:right;">
+max
+</th>
+<th style="text-align:right;">
+empty
+</th>
+<th style="text-align:right;">
+n_unique
+</th>
+<th style="text-align:right;">
+whitespace
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+workclass
+</td>
+<td style="text-align:right;">
+1836
+</td>
+<td style="text-align:right;">
+0.94
+</td>
+<td style="text-align:right;">
+7
+</td>
+<td style="text-align:right;">
+16
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+8
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+education
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1.00
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+12
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+16
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+marital_status
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1.00
+</td>
+<td style="text-align:right;">
+7
+</td>
+<td style="text-align:right;">
+21
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+7
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+occupation
+</td>
+<td style="text-align:right;">
+1843
+</td>
+<td style="text-align:right;">
+0.94
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:right;">
+17
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+14
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+relationship
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1.00
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+14
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+6
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+race
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1.00
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:right;">
+18
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+sex
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1.00
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+6
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+native_country
+</td>
+<td style="text-align:right;">
+583
+</td>
+<td style="text-align:right;">
+0.98
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+26
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+41
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+resposta
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1.00
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Variable type: numeric</strong></p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left;">
+skim_variable
+</th>
+<th style="text-align:right;">
+n_missing
+</th>
+<th style="text-align:right;">
+complete_rate
+</th>
+<th style="text-align:right;">
+mean
+</th>
+<th style="text-align:right;">
+sd
+</th>
+<th style="text-align:right;">
+p0
+</th>
+<th style="text-align:right;">
+p25
+</th>
+<th style="text-align:right;">
+p50
+</th>
+<th style="text-align:right;">
+p75
+</th>
+<th style="text-align:right;">
+p100
+</th>
+<th style="text-align:left;">
+hist
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+age
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+38.58
+</td>
+<td style="text-align:right;">
+13.64
+</td>
+<td style="text-align:right;">
+17
+</td>
+<td style="text-align:right;">
+28
+</td>
+<td style="text-align:right;">
+37
+</td>
+<td style="text-align:right;">
+48
+</td>
+<td style="text-align:right;">
+90
+</td>
+<td style="text-align:left;">
+&lt;U+2587&gt;&lt;U+2587&gt;&lt;U+2585&gt;&lt;U+2582&gt;&lt;U+2581&gt;
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+fnlwgt
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+189778.37
+</td>
+<td style="text-align:right;">
+105549.98
+</td>
+<td style="text-align:right;">
+12285
+</td>
+<td style="text-align:right;">
+117827
+</td>
+<td style="text-align:right;">
+178356
+</td>
+<td style="text-align:right;">
+237051
+</td>
+<td style="text-align:right;">
+1484705
+</td>
+<td style="text-align:left;">
+&lt;U+2587&gt;&lt;U+2581&gt;&lt;U+2581&gt;&lt;U+2581&gt;&lt;U+2581&gt;
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+education_num
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+10.08
+</td>
+<td style="text-align:right;">
+2.57
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+9
+</td>
+<td style="text-align:right;">
+10
+</td>
+<td style="text-align:right;">
+12
+</td>
+<td style="text-align:right;">
+16
+</td>
+<td style="text-align:left;">
+&lt;U+2581&gt;&lt;U+2581&gt;&lt;U+2587&gt;&lt;U+2583&gt;&lt;U+2581&gt;
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+capital_gain
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+1077.65
+</td>
+<td style="text-align:right;">
+7385.29
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+99999
+</td>
+<td style="text-align:left;">
+&lt;U+2587&gt;&lt;U+2581&gt;&lt;U+2581&gt;&lt;U+2581&gt;&lt;U+2581&gt;
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+capital_loss
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+87.30
+</td>
+<td style="text-align:right;">
+402.96
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+4356
+</td>
+<td style="text-align:left;">
+&lt;U+2587&gt;&lt;U+2581&gt;&lt;U+2581&gt;&lt;U+2581&gt;&lt;U+2581&gt;
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+hours_per_week
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+40.44
+</td>
+<td style="text-align:right;">
+12.35
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+40
+</td>
+<td style="text-align:right;">
+40
+</td>
+<td style="text-align:right;">
+45
+</td>
+<td style="text-align:right;">
+99
+</td>
+<td style="text-align:left;">
+&lt;U+2581&gt;&lt;U+2587&gt;&lt;U+2583&gt;&lt;U+2581&gt;&lt;U+2581&gt;
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+id
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+16281.00
+</td>
+<td style="text-align:right;">
+9399.70
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+8141
+</td>
+<td style="text-align:right;">
+16281
+</td>
+<td style="text-align:right;">
+24421
+</td>
+<td style="text-align:right;">
+32561
+</td>
+<td style="text-align:left;">
+&lt;U+2587&gt;&lt;U+2587&gt;&lt;U+2587&gt;&lt;U+2587&gt;&lt;U+2587&gt;
+</td>
+</tr>
+</tbody>
+</table>
+<p><br> As variáveis parecem estar com formatos corretos. Ponto de atenção para as variáveis <code>wokclass</code>, <code>occupation</code> e <code>native_country</code>, que apresentam valores missing. </br></p>
+</div>
+</div>
+<div id="aed" class="section level1">
+<h1>AED</h1>
+<p><br> Agora vamos analisar o comportamento das variáveis para definirmos como tratar os nossos dados para o modelo. </br></p>
+<div id="parte-1" class="section level2 tabset">
+<h2>Parte 1</h2>
+<pre class="r"><code># DataExplorer::create_report(adult)
+
+devtools::source_url(&quot;https://raw.githubusercontent.com/ricardomattos05/functions/master/function_AED_bivariada.R&quot;)
+# 
+# 
+adult2 &lt;- adult %&gt;%
+            select(-id) %&gt;% 
+            mutate(resposta = if_else(resposta == &quot;&gt;50K&quot;, 1, 0))
+# 
+# 
+
+# names(adult2)
+for (i in 1:(length(adult2)-1) ) {
+  
+  df &lt;- adult2[,c(i,15)]
+  cat(&quot;### &quot;,names(df[,1]),&quot;\n&quot;) 
+  print(AED_biv(df,glue(&quot;resposta&quot;),&quot;Pre&quot;))
+  cat(&#39;\n\n&#39;)
+}</code></pre>
+<div id="age" class="section level3">
+<h3>age</h3>
+<p><img src="/ricardomattos05.github.iopost/2021-02-14-Desafio-ML-cursoR/notebook_kaggle_cursoR_ML_files/figure-html/unnamed-chunk-2-1.png" width="672" />NULL</p>
+</div>
+<div id="workclass" class="section level3">
+<h3>workclass</h3>
+<p><img src="/ricardomattos05.github.iopost/2021-02-14-Desafio-ML-cursoR/notebook_kaggle_cursoR_ML_files/figure-html/unnamed-chunk-2-2.png" width="672" />NULL</p>
+</div>
+<div id="fnlwgt" class="section level3">
+<h3>fnlwgt</h3>
+<p><img src="/ricardomattos05.github.iopost/2021-02-14-Desafio-ML-cursoR/notebook_kaggle_cursoR_ML_files/figure-html/unnamed-chunk-2-3.png" width="672" />NULL</p>
+</div>
+<div id="education" class="section level3">
+<h3>education</h3>
+<p><img src="/ricardomattos05.github.iopost/2021-02-14-Desafio-ML-cursoR/notebook_kaggle_cursoR_ML_files/figure-html/unnamed-chunk-2-4.png" width="672" />NULL</p>
+</div>
+<div id="education_num" class="section level3">
+<h3>education_num</h3>
+<p><img src="/ricardomattos05.github.iopost/2021-02-14-Desafio-ML-cursoR/notebook_kaggle_cursoR_ML_files/figure-html/unnamed-chunk-2-5.png" width="672" />NULL</p>
+</div>
+<div id="marital_status" class="section level3">
+<h3>marital_status</h3>
+<p><img src="/ricardomattos05.github.iopost/2021-02-14-Desafio-ML-cursoR/notebook_kaggle_cursoR_ML_files/figure-html/unnamed-chunk-2-6.png" width="672" />NULL</p>
+</div>
+<div id="occupation" class="section level3">
+<h3>occupation</h3>
+<p><img src="/ricardomattos05.github.iopost/2021-02-14-Desafio-ML-cursoR/notebook_kaggle_cursoR_ML_files/figure-html/unnamed-chunk-2-7.png" width="672" />NULL</p>
+</div>
+<div id="relationship" class="section level3">
+<h3>relationship</h3>
+<p><img src="/ricardomattos05.github.iopost/2021-02-14-Desafio-ML-cursoR/notebook_kaggle_cursoR_ML_files/figure-html/unnamed-chunk-2-8.png" width="672" />NULL</p>
+</div>
+<div id="race" class="section level3">
+<h3>race</h3>
+<p><img src="/ricardomattos05.github.iopost/2021-02-14-Desafio-ML-cursoR/notebook_kaggle_cursoR_ML_files/figure-html/unnamed-chunk-2-9.png" width="672" />NULL</p>
+</div>
+<div id="sex" class="section level3">
+<h3>sex</h3>
+<p><img src="/ricardomattos05.github.iopost/2021-02-14-Desafio-ML-cursoR/notebook_kaggle_cursoR_ML_files/figure-html/unnamed-chunk-2-10.png" width="672" />NULL</p>
+</div>
+<div id="capital_gain" class="section level3">
+<h3>capital_gain</h3>
+<p><img src="/ricardomattos05.github.iopost/2021-02-14-Desafio-ML-cursoR/notebook_kaggle_cursoR_ML_files/figure-html/unnamed-chunk-2-11.png" width="672" />NULL</p>
+</div>
+<div id="capital_loss" class="section level3">
+<h3>capital_loss</h3>
+<p><img src="/ricardomattos05.github.iopost/2021-02-14-Desafio-ML-cursoR/notebook_kaggle_cursoR_ML_files/figure-html/unnamed-chunk-2-12.png" width="672" />NULL</p>
+</div>
+<div id="hours_per_week" class="section level3">
+<h3>hours_per_week</h3>
+<p><img src="/ricardomattos05.github.iopost/2021-02-14-Desafio-ML-cursoR/notebook_kaggle_cursoR_ML_files/figure-html/unnamed-chunk-2-13.png" width="672" />NULL</p>
+</div>
+<div id="native_country" class="section level3">
+<h3>native_country</h3>
+<p><img src="/ricardomattos05.github.iopost/2021-02-14-Desafio-ML-cursoR/notebook_kaggle_cursoR_ML_files/figure-html/unnamed-chunk-2-14.png" width="672" />NULL</p>
+</div>
+</div>
+<div id="section" class="section level2 unnumbered">
+<h2></h2>
+<p>Observações:</p>
+<ul>
+<li><p><code>education</code> : é possível visualizar que quanto maior o grau de escolaridade, maior a proporção de pessoas com salarios acima de 50k. E que as categorias abaixo de HS-grad, <code>1th-4th</code> até <code>12th</code>além de serem pouco representativas, possuem baixa proporção, vamos então criar uma categoria uma nova consolidando elas <code>HS-not-grad</code>.</p></li>
+<li><p><code>marital_status</code> : aqui iremos agrupar os campos <code>Married-AF-spouse</code> e <code>Married-civ-spouse</code>, criando a categoria <code>Married</code>, baseado na similaridade entre elas com relação a variável resposta e considerando a descrição delas.</p></li>
+<li><p><code>native_country</code> : É um campo com pouca variabilidade, onde 90% dos dados estão atribuídos como “Estados Unidos”. Sendo assim, poderia considerar apenas Estados Unidos e agrupar o restante como outros, mas vamos manter o máximo de informação e reduzir as categorias para 3, agrupando todos os países que obtiveram proporção maior que a média, manter o valor mais representativo e uma categoria com os países abaixo da média.</p></li>
+<li><p><code>relationship</code> : campo contém os campos <code>husband</code> e <code>wife</code>, aparentemente poderiamos agrupa-los, vamos analisar mais afundo.</p></li>
+<li><p><code>capital_loss</code> e <code>capital_gain</code> : Aparentemente tanto quem ganha quanto quem perde algum valor apresentam maiores probabilidades de ter salario &gt;50k. Vamos então avaliar a correlação entre elas.</p></li>
+<li><p><code>workclass</code> : Categorias com baixa representatividade como <code>Never-worked</code>e <code>Without-pay</code> não possuem classificação com a resposta de interesse “&gt;50k”, vamos dar um zoom nessa variável e analisar os NA’s que identificamos também.</p></li>
+</ul>
+</div>
+<div id="parte-2" class="section level2 tabset">
+<h2>Parte 2</h2>
+<div id="occupation-1" class="section level3">
+<h3>occupation</h3>
+<pre class="r"><code>ggplot(adult, aes(x = occupation, fill = resposta)) + 
+  geom_bar(position=&quot;fill&quot;) + 
+  theme(axis.text.x = element_text(angle = 90)) + 
+  ggtitle(&quot;occupation&quot;)</code></pre>
+<p><img src="/ricardomattos05.github.iopost/2021-02-14-Desafio-ML-cursoR/notebook_kaggle_cursoR_ML_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+<p><br> É possível ver que não faria sentido atribuir os NAs de forma modal, uma vez que nosso objetivo é obter o maior poder preditivo possível, logo, não queremos perder informação. Sendo assim, não vamos diluir os NAs na categoria com maior representatividade <code>Prof-specialty</code>, vamos atribuir à uma categoria com proporções similares e que possui uma boa representatividade, <code>Farming-fishing</code>. </br></p>
+</div>
+<div id="relationship-1" class="section level3">
+<h3>relationship</h3>
+<pre class="r"><code>ggplot(adult, aes(x = relationship)) +
+  geom_bar() +
+  theme(axis.text.x = element_text(angle = 90)) + 
+  ggtitle(&quot;relationship&quot;)</code></pre>
+<p><img src="/ricardomattos05.github.iopost/2021-02-14-Desafio-ML-cursoR/notebook_kaggle_cursoR_ML_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+<pre class="r"><code>ggplot(adult, aes(x = relationship, fill = resposta)) + 
+  geom_bar(position=&quot;fill&quot;) + 
+  theme(axis.text.x = element_text(angle = 90)) + 
+  ggtitle(&quot;relationship&quot;)</code></pre>
+<p><img src="/ricardomattos05.github.iopost/2021-02-14-Desafio-ML-cursoR/notebook_kaggle_cursoR_ML_files/figure-html/unnamed-chunk-4-2.png" width="672" /></p>
+<pre class="r"><code>ggplot(adult, aes(x = relationship, fill = sex)) + 
+  geom_bar(position=&quot;fill&quot;) + 
+  theme(axis.text.x = element_text(angle = 90)) + 
+  ggtitle(&quot;relationship&quot;)</code></pre>
+<p><img src="/ricardomattos05.github.iopost/2021-02-14-Desafio-ML-cursoR/notebook_kaggle_cursoR_ML_files/figure-html/unnamed-chunk-4-3.png" width="672" /></p>
+<p>Vamos então balancear o gênero agrupando as categorias Wife e Husband, criando a categoria <code>Married</code>.</p>
+</div>
+<div id="capital-gain-and-loss" class="section level3">
+<h3>Capital Gain and Loss</h3>
+<pre class="r"><code>ggplot(adult, aes(x= capital_gain, y= capital_loss)) +
+  geom_point()</code></pre>
+<p><img src="/ricardomattos05.github.iopost/2021-02-14-Desafio-ML-cursoR/notebook_kaggle_cursoR_ML_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<pre class="r"><code>sum(adult$capital_loss &gt; 0 &amp; adult$capital_gain &gt; 0)</code></pre>
+<pre><code>## [1] 0</code></pre>
+<p>Sendo assim, podemos soma-las e criar a variável <code>capital_total</code> sem medo de perder informação.</p>
+</div>
+<div id="worclass" class="section level3">
+<h3>Worclass</h3>
+<pre class="r"><code>ggplot(adult, aes(x = workclass)) +
+  geom_bar() +
+  theme(axis.text.x = element_text(angle = 90)) + 
+  ggtitle(&quot;Workclass&quot;)</code></pre>
+<p><img src="/ricardomattos05.github.iopost/2021-02-14-Desafio-ML-cursoR/notebook_kaggle_cursoR_ML_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+<pre class="r"><code>ggplot(adult, aes(x = workclass, fill = resposta)) + 
+  geom_bar(position=&quot;fill&quot;) + 
+  theme(axis.text.x = element_text(angle = 90)) + 
+  ggtitle(&quot;Workclass&quot;)</code></pre>
+<p><img src="/ricardomattos05.github.iopost/2021-02-14-Desafio-ML-cursoR/notebook_kaggle_cursoR_ML_files/figure-html/unnamed-chunk-7-2.png" width="672" /></p>
+<p>Pelo visto a catgoria NA possui relação com a variável resposta distinta de todas as outras categorias, vamos então gerar uma nova categoria <code>not-identify</code> para atribuir os valores NA.</p>
+</div>
+<div id="native_country-1" class="section level3">
+<h3>native_country</h3>
+<pre class="r"><code>med &lt;- (adult %&gt;% 
+          select(resposta) %&gt;%
+          filter(resposta == &quot;&gt;50K&quot;) %&gt;% 
+          count() %&gt;% 
+          as.numeric())/nrow(adult)
+         
+
+tb_country&lt;- adult %&gt;% 
+                select(native_country, resposta) %&gt;% 
+                group_by(native_country) %&gt;% 
+                count(resposta) %&gt;% 
+                mutate(prop = prop.table(n)) %&gt;% 
+                filter(resposta == &quot;&gt;50K&quot;) %&gt;% 
+                mutate( class = case_when( native_country == &quot;United-States&quot; ~ &quot;United-States&quot;,
+                                           prop &gt; med ~ &quot;&gt;mean&quot;,
+                                           prop &lt;= med ~ &quot;&lt;=mean&quot; )  )
+
+tb_country %&gt;% 
+  select(native_country,class) %&gt;% 
+  group_by(class) %&gt;% 
+  count()</code></pre>
+<pre><code>## # A tibble: 3 x 2
+## # Groups:   class [3]
+##   class             n
+##   &lt;chr&gt;         &lt;int&gt;
+## 1 &lt;=mean           21
+## 2 &gt;mean            18
+## 3 United-States     1</code></pre>
+<p>Ficamos então com 21 países com proporções abaixo da méda, 18 acima e “United-States” como as 3 categorias restantes.</p>
+<p><img src="/ricardomattos05.github.iopost/2021-02-14-Desafio-ML-cursoR/notebook_kaggle_cursoR_ML_files/figure-html/unnamed-chunk-9-1.png" width="672" /><img src="/ricardomattos05.github.iopost/2021-02-14-Desafio-ML-cursoR/notebook_kaggle_cursoR_ML_files/figure-html/unnamed-chunk-9-2.png" width="672" /></p>
+<p><br>A distribuição ficou com 5% para países acima da média e 5% para países abaixo da média.</br></p>
+</div>
+</div>
+</div>
+<div id="modelagem" class="section level1">
+<h1>Modelagem</h1>
+<p>Com nossa a análise exploratória concluída, vamos dar início as estapas da modelagem utilizando o framework do <code>tidymodels</code>.</p>
+<div id="amostragem" class="section level2">
+<h2>Amostragem</h2>
+<p>Fazendo a separação dos dados em treino e teste, estratificando pela variável resposta para a modelagem.</p>
+<pre class="r"><code>set.seed(32)
+
+adult_split &lt;- initial_split(adult, prop = 0.8, strata = resposta)
+
+adult_train &lt;- training(adult_split)
+adult_test &lt;- testing(adult_split)</code></pre>
+</div>
+<div id="data-prep" class="section level2">
+<h2>Data Prep</h2>
+<p>Os tratamentos necessários observados na AED, que foi feita utilizando o pacote <code>DataExplorer</code> e a função <a href="https://github.com/ricardomattos05/functions/blob/master/function_AED_bivariada.R"><code>AED_biv</code></a> que gerei para entender o comportamento das variáveis com relação a variável resposta, serão armazenados utilizando o recipes para ser utilizado tanto para treinar os modelos como para testar posteriormente.</p>
+<pre class="r"><code>adult_recipe &lt;- 
+  recipe(resposta ~ ., data = adult_train) %&gt;% 
+  step_mutate(
+    
+    occupation = case_when(
+      is.na(occupation) ~ &quot;Farming-fishing&quot;,
+      TRUE ~ as.character(occupation)),
+    
+    workclass = case_when(
+      is.na(workclass) ~ &quot;Not-identify&quot;,
+      TRUE ~ as.character(workclass)),
+    
+    class_country = case_when(native_country %in% c(&quot;Cambodia&quot;, &quot;Canada&quot;, &quot;China&quot;, &quot;Cuba&quot;, &quot;England&quot;, &quot;France&quot;, &quot;Germany&quot;, &quot;Greece&quot;, &quot;Hong&quot;, &quot;India&quot;, &quot;Iran&quot;, &quot;Italy&quot;, &quot;Japan&quot;, &quot;Philippines&quot;, &quot;Scotland&quot;, &quot;Taiwan&quot;, &quot;Yugoslavia&quot;, NA) ~ &quot;greater_mean&quot;,
+                             native_country == &quot;United-States&quot; ~ &quot;United-States&quot;,
+                             TRUE ~ &quot;smaller_mean&quot;)
+    ,
+    
+    capital_total = capital_gain + capital_loss
+    , 
+    
+    marital_status = case_when(
+      marital_status %in% c(&quot;Married-AF-spouse&quot; , &quot;Married-civ-spouse&quot;) ~ &quot;Married&quot;,
+      TRUE ~ as.character(marital_status))
+    ,
+    
+    education = case_when(education %in% c(&quot;1st-4th&quot;, &quot;5th-6th&quot;, &quot;7th-8th&quot;, &quot;9th&quot;, &quot;10th&quot;, &quot;11th&quot;, &quot;12th&quot;) ~ &quot;HS-not-grad&quot;,
+                          TRUE ~ as.character(education))
+    ,
+    
+    relationship = case_when(  relationship %in% c(&quot;Husband&quot;,&quot;Wife&quot;) ~ &quot;Married&quot;,
+                               TRUE ~ as.character(relationship))
+    
+  ) %&gt;% 
+  step_rm(id, capital_gain, capital_loss, native_country)%&gt;% 
+  step_string2factor(all_nominal()) %&gt;%
+  step_normalize(all_numeric()) %&gt;% 
+  step_zv(all_predictors()) %&gt;%
+  step_novel(all_nominal(), -all_outcomes()) %&gt;% 
+  step_dummy(all_nominal(), -all_outcomes())
+
+ # bake(prep(adult_recipe), adult_train)
+
+
+adult_wf &lt;- 
+  workflow() %&gt;% 
+  add_recipe(adult_recipe)</code></pre>
+</div>
+<div id="cross-validation" class="section level2">
+<h2>Cross-Validation</h2>
+<p>Especificando a validação cruzada:</p>
+<pre class="r"><code>set.seed(32)
+adult_vfold &lt;- vfold_cv(adult_train, v = 5, strata = resposta)
+adult_vfold</code></pre>
+<pre><code>## #  5-fold cross-validation using stratification 
+## # A tibble: 5 x 2
+##   splits               id   
+##   &lt;list&gt;               &lt;chr&gt;
+## 1 &lt;split [20.8K/5.2K]&gt; Fold1
+## 2 &lt;split [20.8K/5.2K]&gt; Fold2
+## 3 &lt;split [20.8K/5.2K]&gt; Fold3
+## 4 &lt;split [20.8K/5.2K]&gt; Fold4
+## 5 &lt;split [20.8K/5.2K]&gt; Fold5</code></pre>
+</div>
+<div id="modelos" class="section level2 tabset">
+<h2>Modelos</h2>
+<p>Os modelos que serão ajustados:</p>
+<ul>
+<li>Decision tree
+<ul>
+<li>Random Forest</li>
+<li>Xgboost</li>
+</ul></li>
+</ul>
+<p>Obs: Os valores dos hiperparâmetros foram obtidos a partir da tunagem e inseridos apenas para otimizar o tempo de renderização do script.</p>
+<div id="decision-tree" class="section level3">
+<h3>Decision tree</h3>
+<p>Especificando modelo:</p>
+<pre class="r"><code>adult_tree &lt;- 
+  decision_tree(
+    min_n = 19,
+    cost_complexity = 1.069415e-09, 
+    tree_depth = 8) %&gt;%
+  set_mode(&quot;classification&quot;) %&gt;%
+  set_engine(&quot;rpart&quot;)
+ #1.069415e-09  8   19  Model04
+adult_tree</code></pre>
+<pre><code>## Decision Tree Model Specification (classification)
+## 
+## Main Arguments:
+##   cost_complexity = 1.069415e-09
+##   tree_depth = 8
+##   min_n = 19
+## 
+## Computational engine: rpart</code></pre>
+<p>Workflow para decision tree:</p>
+<pre class="r"><code>workflow_adult_tree &lt;- 
+  adult_wf %&gt;% 
+  add_model(adult_tree)</code></pre>
+<p>Parâmentros:</p>
+<pre class="r"><code># hiperparams &lt;- parameters(
+#  adult_tree
+# )
+# hiperparams</code></pre>
+<p>Grid:</p>
+<pre class="r"><code># set.seed(32)
+# tree_grid &lt;- grid_max_entropy(hiperparams, size = 10)
+# tree_grid</code></pre>
+<p>Efetuando tunagem de hiperparâmetros:</p>
+<pre class="r"><code># autoplot(tree_tune)
+# show_best(tree_tune, &quot;roc_auc&quot;)
+# 
+# tree_best_hiperparams &lt;- select_best(tree_tune) #1.069415e-09 8   19  Model04 (roc_auc = 0.8993608)
+# tree_best_hiperparams</code></pre>
+<p>Finalizando WF:</p>
+<pre class="r"><code>workflow_tree_final &lt;- finalize_workflow(
+  workflow_adult_tree,
+  #tree_best_hiperparams
+  parameters(workflow_adult_tree)
+)
+
+workflow_tree_final</code></pre>
+<pre><code>## == Workflow =====================================================================
+## Preprocessor: Recipe
+## Model: decision_tree()
+## 
+## -- Preprocessor -----------------------------------------------------------------
+## 7 Recipe Steps
+## 
+## * step_mutate()
+## * step_rm()
+## * step_string2factor()
+## * step_normalize()
+## * step_zv()
+## * step_novel()
+## * step_dummy()
+## 
+## -- Model ------------------------------------------------------------------------
+## Decision Tree Model Specification (classification)
+## 
+## Main Arguments:
+##   cost_complexity = 1.069415e-09
+##   tree_depth = 8
+##   min_n = 19
+## 
+## Computational engine: rpart</code></pre>
+<p>Verificando importância dos atributos:</p>
+<pre class="r"><code>workflow_tree_final %&gt;%
+  fit(adult_train) %&gt;%
+  pull_workflow_fit() %&gt;%
+  vip::vip(geom = &quot;col&quot;)</code></pre>
+<p><img src="/ricardomattos05.github.iopost/2021-02-14-Desafio-ML-cursoR/notebook_kaggle_cursoR_ML_files/figure-html/unnamed-chunk-20-1.png" width="672" /></p>
+<p>Modelo final:</p>
+<pre class="r"><code>tree_final &lt;- last_fit(workflow_tree_final, adult_split)
+collect_metrics(tree_final)</code></pre>
+<pre><code>## # A tibble: 2 x 3
+##   .metric  .estimator .estimate
+##   &lt;chr&gt;    &lt;chr&gt;          &lt;dbl&gt;
+## 1 accuracy binary         0.843
+## 2 roc_auc  binary         0.895</code></pre>
+</div>
+<div id="random-forest" class="section level3">
+<h3>Random Forest</h3>
+<p>Especificando modelo:</p>
+<pre class="r"><code>adult_rf &lt;- 
+  rand_forest(
+    min_n = 21,
+    mtry = 23,
+    trees = 1715) %&gt;%
+  set_mode(&quot;classification&quot;) %&gt;%
+  set_engine(&quot;randomForest&quot;)
+# 23  1715    21
+adult_rf</code></pre>
+<pre><code>## Random Forest Model Specification (classification)
+## 
+## Main Arguments:
+##   mtry = 23
+##   trees = 1715
+##   min_n = 21
+## 
+## Computational engine: randomForest</code></pre>
+<p>Workflow para random forest:</p>
+<pre class="r"><code>workflow_adult_rf &lt;- 
+  adult_wf %&gt;% 
+  add_model(adult_rf)</code></pre>
+<p>Grid:</p>
+<pre class="r"><code># set.seed(32)
+# 
+# rf_grid &lt;- parameters(adult_rf) %&gt;% 
+#   finalize(bake(prep(adult_recipe), adult_train)) %&gt;% 
+#   grid_max_entropy(size = 10)
+# 
+# rf_grid</code></pre>
+<p>Efetuando tunagem de hiperparâmetros:</p>
+<pre class="r"><code># library(doParallel)
+# library(&quot;doFuture&quot;)
+# 
+# all_cores &lt;- parallel::detectCores(logical = FALSE) - 1
+# registerDoFuture()
+# cl &lt;- makeCluster(all_cores)
+# plan(future::cluster, workers = cl)
+# getDoParWorkers()
+# 
+# set.seed(123)
+# rf_tune&lt;- 
+#   workflow_adult_rf %&gt;% 
+#   tune_grid(
+#     resamples = adult_vfold,
+#     grid = rf_grid,
+#     control = control_grid(save_pred = TRUE, verbose = FALSE, allow_par = T),
+#     metrics = metric_set(roc_auc)
+#   )</code></pre>
+<pre class="r"><code># autoplot(rf_tune)
+# show_best(rf_tune,&quot;roc_auc&quot;)
+# 
+# rf_best_hiperparams &lt;- select_best(rf_tune) 
+# rf_best_hiperparams 
+
+##    mtry trees min_n .config
+##   &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;chr&gt;  
+## 1    23  1715    21 Model01</code></pre>
+<p>Finalizando WF:</p>
+<pre class="r"><code>workflow_rf_final &lt;- finalize_workflow(
+  workflow_adult_rf,
+  #rf_best_hiperparams
+  parameters(workflow_adult_rf)
+)
+
+workflow_rf_final</code></pre>
+<pre><code>## == Workflow =====================================================================
+## Preprocessor: Recipe
+## Model: rand_forest()
+## 
+## -- Preprocessor -----------------------------------------------------------------
+## 7 Recipe Steps
+## 
+## * step_mutate()
+## * step_rm()
+## * step_string2factor()
+## * step_normalize()
+## * step_zv()
+## * step_novel()
+## * step_dummy()
+## 
+## -- Model ------------------------------------------------------------------------
+## Random Forest Model Specification (classification)
+## 
+## Main Arguments:
+##   mtry = 23
+##   trees = 1715
+##   min_n = 21
+## 
+## Computational engine: randomForest</code></pre>
+<p>Verificando importância dos atributos:</p>
+<pre class="r"><code>workflow_rf_final %&gt;%
+  fit(adult_train) %&gt;%
+  pull_workflow_fit() %&gt;%
+  vip::vip(geom = &quot;col&quot;)</code></pre>
+<p><img src="/ricardomattos05.github.iopost/2021-02-14-Desafio-ML-cursoR/notebook_kaggle_cursoR_ML_files/figure-html/unnamed-chunk-28-1.png" width="672" /></p>
+<p>Modelo final:</p>
+<pre class="r"><code>rf_final &lt;- last_fit(workflow_rf_final, adult_split)
+collect_metrics(rf_final) #roc_auc = 0.9094242</code></pre>
+<pre><code>## # A tibble: 2 x 3
+##   .metric  .estimator .estimate
+##   &lt;chr&gt;    &lt;chr&gt;          &lt;dbl&gt;
+## 1 accuracy binary         0.859
+## 2 roc_auc  binary         0.909</code></pre>
+</div>
+<div id="xgboost" class="section level3">
+<h3>Xgboost</h3>
+<p>Como o Xgboost possui muitos parâmetros, optei pora não tunnar os parâmetros <code>loss_reduction</code> e <code>samples_size</code> nesse primeiro momento. Sendo assim os valores default da enginee <code>xgboost</code> são atribuídos à esses parâmetros, loss_reduction = 0 e sample_size = 1.</p>
+<pre class="r"><code>adult_xgb &lt;- 
+  boost_tree(
+   mtry = 34, 
+  trees = 1309, 
+  min_n = 5, 
+  tree_depth = 10,
+  # loss_reduction = tune(), 
+  learn_rate = 0.0106, 
+  # sample_size = tune()
+  ) %&gt;%
+  set_mode(&quot;classification&quot;) %&gt;%
+  set_engine(&quot;xgboost&quot;)
+
+##    mtry trees min_n tree_depth learn_rate .config
+##   &lt;int&gt; &lt;int&gt; &lt;int&gt;      &lt;int&gt;      &lt;dbl&gt; &lt;chr&gt;  
+## 1    34  1309     5         10     0.0106 Model13
+
+adult_xgb</code></pre>
+<pre><code>## Boosted Tree Model Specification (classification)
+## 
+## Main Arguments:
+##   mtry = 34
+##   trees = 1309
+##   min_n = 5
+##   tree_depth = 10
+##   learn_rate = 0.0106
+## 
+## Computational engine: xgboost</code></pre>
+<p>Workflow para Xgboost:</p>
+<pre class="r"><code>workflow_adult_xgb &lt;- 
+  adult_wf %&gt;% 
+  add_model(adult_xgb)
+
+workflow_adult_xgb</code></pre>
+<pre><code>## == Workflow =====================================================================
+## Preprocessor: Recipe
+## Model: boost_tree()
+## 
+## -- Preprocessor -----------------------------------------------------------------
+## 7 Recipe Steps
+## 
+## * step_mutate()
+## * step_rm()
+## * step_string2factor()
+## * step_normalize()
+## * step_zv()
+## * step_novel()
+## * step_dummy()
+## 
+## -- Model ------------------------------------------------------------------------
+## Boosted Tree Model Specification (classification)
+## 
+## Main Arguments:
+##   mtry = 34
+##   trees = 1309
+##   min_n = 5
+##   tree_depth = 10
+##   learn_rate = 0.0106
+## 
+## Computational engine: xgboost</code></pre>
+<p>Grid:</p>
+<pre class="r"><code># set.seed(32)
+# 
+# xgb_grid &lt;- parameters(adult_xgb) %&gt;%
+#     finalize(bake(prep(adult_recipe),adult_train)) %&gt;%
+#     grid_max_entropy(size = 20)
+# 
+# xgb_grid</code></pre>
+<p><br>Efetuando tunagem de hiperparâmetros:</br></p>
+<pre class="r"><code># library(doFuture)
+# all_cores &lt;- parallel::detectCores(logical = FALSE) - 1
+# 
+# registerDoFuture()
+# cl &lt;- makeCluster(all_cores)
+# plan(future::cluster, workers = cl)
+# getDoParWorkers()
+# 
+# # grid search
+# ini &lt;- Sys.time()
+# xgb_tune &lt;-
+#   workflow_adult_xgb %&gt;%
+#     tune_grid(
+#         resamples = adult_vfold,
+#         grid = xgb_grid,
+#         control = control_grid(verbose = FALSE),
+#         metrics = metric_set(roc_auc)
+#     )
+# Sys.time()- ini #Time difference of 39.9844 mins(parallel)
+# 
+# foreach::registerDoSEQ()</code></pre>
+<pre class="r"><code># autoplot(xgb_tune)
+# show_best(xgb_tune,&quot;roc_auc&quot;)
+# 
+# xgb_best_hiperparams &lt;- select_best(xgb_tune)
+# xgb_best_hiperparams 
+
+##    mtry trees min_n tree_depth learn_rate .config
+##   &lt;int&gt; &lt;int&gt; &lt;int&gt;      &lt;int&gt;      &lt;dbl&gt; &lt;chr&gt;  
+## 1    34  1309     5         10     0.0106 Model13</code></pre>
+<p>Finalizando WF:</p>
+<pre class="r"><code>workflow_xgb_final &lt;- finalize_workflow(
+  workflow_adult_xgb,
+  #xgb_best_hiperparams
+  parameters(workflow_adult_xgb)
+)
+
+workflow_xgb_final</code></pre>
+<pre><code>## == Workflow =====================================================================
+## Preprocessor: Recipe
+## Model: boost_tree()
+## 
+## -- Preprocessor -----------------------------------------------------------------
+## 7 Recipe Steps
+## 
+## * step_mutate()
+## * step_rm()
+## * step_string2factor()
+## * step_normalize()
+## * step_zv()
+## * step_novel()
+## * step_dummy()
+## 
+## -- Model ------------------------------------------------------------------------
+## Boosted Tree Model Specification (classification)
+## 
+## Main Arguments:
+##   mtry = 34
+##   trees = 1309
+##   min_n = 5
+##   tree_depth = 10
+##   learn_rate = 0.0106
+## 
+## Computational engine: xgboost</code></pre>
+<p>Verificando importância dos atributos:</p>
+<pre class="r"><code>workflow_xgb_final %&gt;%
+  fit(adult_train) %&gt;%
+  pull_workflow_fit() %&gt;%
+  vip::vip(geom = &quot;col&quot;)</code></pre>
+<p><img src="/ricardomattos05.github.iopost/2021-02-14-Desafio-ML-cursoR/notebook_kaggle_cursoR_ML_files/figure-html/unnamed-chunk-36-1.png" width="672" /></p>
+<p>Modelo final:</p>
+<pre class="r"><code>xgb_final &lt;- last_fit(workflow_xgb_final, adult_split)
+collect_metrics(xgb_final) #0.9246310</code></pre>
+<pre><code>## # A tibble: 2 x 3
+##   .metric  .estimator .estimate
+##   &lt;chr&gt;    &lt;chr&gt;          &lt;dbl&gt;
+## 1 accuracy binary         0.868
+## 2 roc_auc  binary         0.924</code></pre>
+</div>
+<div id="xgboost2" class="section level3">
+<h3>Xgboost2</h3>
+<p>Agora vamos inserir os valores identificados na tunagem para os parâmetros e efetuar o tuning para os parâmetros que <code>sample_size</code> e <code>loss_reduction</code>:</p>
+<pre class="r"><code>adult_xgb2 &lt;- 
+  boost_tree(
+   mtry = 34, 
+  trees = 1309, 
+  min_n = 5, 
+  tree_depth = 10,
+  loss_reduction = 0.000127,#tune(),
+  learn_rate = 0.0106445, 
+  sample_size = 0.989,#tune()
+  ) %&gt;%
+  set_mode(&quot;classification&quot;) %&gt;%
+  set_engine(&quot;xgboost&quot;)
+
+##   loss_reduction sample_size .config
+##            &lt;dbl&gt;       &lt;dbl&gt; &lt;chr&gt;  
+## 1       0.000127       0.989 Model09
+
+adult_xgb2</code></pre>
+<pre><code>## Boosted Tree Model Specification (classification)
+## 
+## Main Arguments:
+##   mtry = 34
+##   trees = 1309
+##   min_n = 5
+##   tree_depth = 10
+##   learn_rate = 0.0106445
+##   loss_reduction = 0.000127
+##   sample_size = 0.989
+## 
+## Computational engine: xgboost</code></pre>
+<p>Workflow para Xgboost:</p>
+<pre class="r"><code>workflow_adult_xgb2 &lt;- 
+  adult_wf %&gt;% 
+  add_model(adult_xgb2)</code></pre>
+<p>Grid:</p>
+<pre class="r"><code># set.seed(32)
+# 
+# xgb_grid2 &lt;- parameters(adult_xgb2) %&gt;%
+#     grid_max_entropy(size = 20)
+# 
+# xgb_grid2</code></pre>
+<p>Efetuando tunagem de hiperparâmetros:</p>
+<pre class="r"><code># all_cores &lt;- parallel::detectCores(logical = FALSE) - 1
+# 
+# registerDoFuture()
+# cl &lt;- makeCluster(all_cores)
+# plan(future::cluster, workers = cl)
+# getDoParWorkers()
+# 
+# # grid search
+# ini &lt;- Sys.time()
+# xgb_tune2 &lt;-
+#   workflow_adult_xgb2 %&gt;%
+#     tune_grid(
+#         resamples = adult_vfold,
+#         grid = xgb_grid2,
+#         control = control_grid(verbose = FALSE),
+#         metrics = metric_set(roc_auc)
+#     )
+# Sys.time()- ini
+# 
+# foreach::registerDoSEQ()</code></pre>
+<pre class="r"><code># autoplot(xgb_tune2)
+# show_best(xgb_tune2,&quot;roc_auc&quot;)
+# 
+# xgb2_best_hiperparams &lt;- select_best(xgb_tune2)
+# xgb2_best_hiperparams </code></pre>
+<p>Finalizando WF:</p>
+<pre class="r"><code>workflow_xgb_final2 &lt;- finalize_workflow(
+  workflow_adult_xgb2,
+  # xgb2_best_hiperparams
+  parameters(workflow_adult_xgb2)
+)
+
+workflow_xgb_final2</code></pre>
+<pre><code>## == Workflow =====================================================================
+## Preprocessor: Recipe
+## Model: boost_tree()
+## 
+## -- Preprocessor -----------------------------------------------------------------
+## 7 Recipe Steps
+## 
+## * step_mutate()
+## * step_rm()
+## * step_string2factor()
+## * step_normalize()
+## * step_zv()
+## * step_novel()
+## * step_dummy()
+## 
+## -- Model ------------------------------------------------------------------------
+## Boosted Tree Model Specification (classification)
+## 
+## Main Arguments:
+##   mtry = 34
+##   trees = 1309
+##   min_n = 5
+##   tree_depth = 10
+##   learn_rate = 0.0106445
+##   loss_reduction = 0.000127
+##   sample_size = 0.989
+## 
+## Computational engine: xgboost</code></pre>
+<p>Verificando importância dos atributos:</p>
+<pre class="r"><code>workflow_xgb_final2 %&gt;%
+  fit(adult_train) %&gt;%
+  pull_workflow_fit() %&gt;%
+  vip::vip(geom = &quot;col&quot;)</code></pre>
+<p><img src="/ricardomattos05.github.iopost/2021-02-14-Desafio-ML-cursoR/notebook_kaggle_cursoR_ML_files/figure-html/unnamed-chunk-44-1.png" width="672" /></p>
+<p>Modelo final:</p>
+<pre class="r"><code>xgb2_final &lt;- last_fit(workflow_xgb_final2, adult_split)
+
+collect_metrics(xgb2_final) #0.9243285</code></pre>
+<pre><code>## # A tibble: 2 x 3
+##   .metric  .estimator .estimate
+##   &lt;chr&gt;    &lt;chr&gt;          &lt;dbl&gt;
+## 1 accuracy binary         0.868
+## 2 roc_auc  binary         0.925</code></pre>
+</div>
+</div>
+</div>
+<div id="comparando-os-modelos" class="section level1">
+<h1>Comparando os modelos</h1>
+<pre class="r"><code>bind_rows(
+ tree_final %&gt;%
+  collect_predictions() %&gt;% 
+  mutate(id = &quot;Decision tree&quot;)
+  ,
+ rf_final %&gt;%
+  collect_predictions() %&gt;%
+  mutate(id = &quot;Random Forest&quot;)
+ ,
+  xgb_final %&gt;%
+  collect_predictions() %&gt;%
+  mutate(id = &quot;xgboost&quot;)
+  ,
+  xgb2_final %&gt;%
+  collect_predictions() %&gt;% 
+  mutate(id = &quot;xgboost2&quot;)
+) %&gt;% 
+  group_by(id) %&gt;% 
+  nest() %&gt;% 
+  ungroup() %&gt;% 
+  mutate(roc = map(data, ~roc_curve(.x, truth = resposta, `.pred_&gt;50K`)),
+         auc = map_dbl(data, ~roc_auc(.x, truth = resposta, `.pred_&gt;50K`) %&gt;% 
+                         pull(.estimate) %&gt;% round(4)),
+         id = paste0(id, &quot; auc: &quot;, auc)) %&gt;% 
+  select(-data) %&gt;% 
+  unnest(cols = c(roc)) %&gt;% 
+  ggplot() +
+  aes(x = 1 - specificity, y = sensitivity, color = id) +
+  geom_path() +
+  geom_abline(lty = 3) +
+  ggtitle(&quot;Curva Roc&quot;)</code></pre>
+<p><img src="/ricardomattos05.github.iopost/2021-02-14-Desafio-ML-cursoR/notebook_kaggle_cursoR_ML_files/figure-html/unnamed-chunk-46-1.png" width="672" /></p>
+<p>Podemos ver a partir da curva roc que o xgboost obteve melhor perfomance que o random forest e a árvore de decisão.
+Interessante que o xgboost sem tunar os hiperparâmetros <code>loss_reduction</code> e <code>sample_size</code> se saiu discretamente melhor que o xgboost2 onde efetuamos o tuning desses dois hiperparâmetros. Sendo assim nosso modelo final será o <strong>xgb_final</strong>.</p>
+</div>
+<div id="scoragem-para-submeter-resultado" class="section level1">
+<h1>Scoragem para submeter resultado</h1>
+<p>Vamos então finalizar nosso modelo campeão e scorar a base de validação para efetuar a submissão:</p>
+<pre class="r"><code>adult_val &lt;- readr::read_rds(&quot;adult_val.rds&quot;)
+
+xgboost_modelo_final &lt;- adult_xgb #%&gt;% 
+    # finalize_model(xgb_best_hiperparams)
+
+adult_fit &lt;- 
+  fit(xgboost_modelo_final,
+    formula = resposta ~ .,  
+    data = bake(prep(adult_recipe), new_data = adult))
+
+adult_val$more_than_50k &lt;- 
+  predict(adult_fit, 
+          bake(prep(adult_recipe), new_data = adult_val),
+          type = &quot;prob&quot;)$`.pred_&gt;50K`</code></pre>
+<p>Matriz de confusão:</p>
+<pre class="r"><code>adult_val %&gt;% 
+  transmute(resposta = factor(resposta, levels = c(&quot;&gt;50K&quot;, &quot;&lt;=50K&quot;)), 
+            more_than_50k = ifelse(more_than_50k &gt; 0.5, &quot;&gt;50K&quot;, &quot;&lt;=50K&quot;) %&gt;% 
+              factor(levels = c(&quot;&gt;50K&quot;, &quot;&lt;=50K&quot;))) %&gt;% 
+  table() %&gt;% 
+  caret::confusionMatrix()</code></pre>
+<pre><code>## Confusion Matrix and Statistics
+## 
+##         more_than_50k
+## resposta  &gt;50K &lt;=50K
+##    &gt;50K   2503  1343
+##    &lt;=50K   725 11710
+##                                           
+##                Accuracy : 0.873           
+##                  95% CI : (0.8678, 0.8781)
+##     No Information Rate : 0.8017          
+##     P-Value [Acc &gt; NIR] : &lt; 2.2e-16       
+##                                           
+##                   Kappa : 0.6273          
+##                                           
+##  Mcnemar&#39;s Test P-Value : &lt; 2.2e-16       
+##                                           
+##             Sensitivity : 0.7754          
+##             Specificity : 0.8971          
+##          Pos Pred Value : 0.6508          
+##          Neg Pred Value : 0.9417          
+##              Prevalence : 0.1983          
+##          Detection Rate : 0.1537          
+##    Detection Prevalence : 0.2362          
+##       Balanced Accuracy : 0.8363          
+##                                           
+##        &#39;Positive&#39; Class : &gt;50K            
+## </code></pre>
+<p>Selecionando campos no formato da submissão:</p>
+<pre class="r"><code>submissao &lt;- adult_val %&gt;% select(id, more_than_50k)
+
+# readr::write_csv(submissao, &quot;submissao.csv&quot;)</code></pre>
+</div>
