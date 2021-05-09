@@ -2,53 +2,53 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Tags on Blog do Ristat</title>
-    <link>https://ricardomattos05.github.io/ricardomattos05.github.io/tags/</link>
+    <link>https://ricardomattos05.github.io/tags/</link>
     <description>Recent content in Tags on Blog do Ristat</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Sun, 12 Jul 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://ricardomattos05.github.io/ricardomattos05.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 12 Jul 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://ricardomattos05.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Machine Learning</title>
-      <link>https://ricardomattos05.github.io/ricardomattos05.github.io/tags/machine-learning/</link>
+      <link>https://ricardomattos05.github.io/tags/machine-learning/</link>
       <pubDate>Sun, 12 Jul 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://ricardomattos05.github.io/ricardomattos05.github.io/tags/machine-learning/</guid>
+      <guid>https://ricardomattos05.github.io/tags/machine-learning/</guid>
       <description></description>
     </item>
     
     <item>
       <title>R Markdown</title>
-      <link>https://ricardomattos05.github.io/ricardomattos05.github.io/tags/r-markdown/</link>
+      <link>https://ricardomattos05.github.io/tags/r-markdown/</link>
       <pubDate>Sun, 12 Jul 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://ricardomattos05.github.io/ricardomattos05.github.io/tags/r-markdown/</guid>
+      <guid>https://ricardomattos05.github.io/tags/r-markdown/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Tidymodels</title>
-      <link>https://ricardomattos05.github.io/ricardomattos05.github.io/tags/tidymodels/</link>
+      <link>https://ricardomattos05.github.io/tags/tidymodels/</link>
       <pubDate>Sun, 12 Jul 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://ricardomattos05.github.io/ricardomattos05.github.io/tags/tidymodels/</guid>
+      <guid>https://ricardomattos05.github.io/tags/tidymodels/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Brasileirao</title>
-      <link>https://ricardomattos05.github.io/ricardomattos05.github.io/tags/brasileirao/</link>
+      <link>https://ricardomattos05.github.io/tags/brasileirao/</link>
       <pubDate>Sun, 28 Jun 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://ricardomattos05.github.io/ricardomattos05.github.io/tags/brasileirao/</guid>
+      <guid>https://ricardomattos05.github.io/tags/brasileirao/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Web scrapping</title>
-      <link>https://ricardomattos05.github.io/ricardomattos05.github.io/tags/web-scrapping/</link>
+      <link>https://ricardomattos05.github.io/tags/web-scrapping/</link>
       <pubDate>Sun, 28 Jun 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://ricardomattos05.github.io/ricardomattos05.github.io/tags/web-scrapping/</guid>
+      <guid>https://ricardomattos05.github.io/tags/web-scrapping/</guid>
       <description></description>
     </item>
     
