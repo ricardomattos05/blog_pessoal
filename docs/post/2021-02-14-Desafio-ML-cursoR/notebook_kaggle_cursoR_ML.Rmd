@@ -4,19 +4,25 @@ author: "Ricardo Mattos"
 date: "2020-07-12"
 output:
   html_document:
+    html_notebook:
+    df_print: paged
     toc: yes
-    toc_float: yes
-    number_sections: yes
-    hide: yes
+    code_folding: hide
     message: no
     warning: no
+    number_sections: yes
+    toc_float: yes
 categories: ["R", "Machine Learning"]
 tags: ["R Markdown", "Machine Learning", "Tidymodels"]
 thumbnail: images/tidymodels.jpg
 ---
+# Introdução
 
+O objetivo desse notebook é efetuar todo o processo de modelagem da base de dados `adult`, disponibilizada para o desafio do curso de introdução ao Machine Learning da Curso-R, utilizando o framework `tidymodels`. Ou seja, explorar, tratar, preparar, tunnar e escolher o modelo que melhor se ajusta aos dados disponibilizados.
 
-```{r setup, include=FALSE}
+# Lendo Pacotes
+
+```{r setup}
 library(readr)
 library(tidymodels)
 library(ggplot2)
@@ -29,10 +35,6 @@ library(forcats)
 library(DataExplorer)
 library(e1071)
 ```
-
-# Objetivo
-
-O objetivo desse notebook é efetuar todo o processo de modelagem da base de dados `adult`, disponibilizada para o desafio do curso de introdução ao Machine Learning da Curso-R, utilizando o framework `tidymodels`. Ou seja, explorar, tratar, preparar, tunnar e escolher o modelo que melhor se ajusta aos dados disponibilizados.
 
 
 # Leitura da base
