@@ -50,10 +50,10 @@ menu:
       url: /post/
       weight: 200
     - identifier: about
-      name: About
+      name: About Me
       url: /about/
       weight: 300
-    - identifier: contact
-      name: Contact
-      url: /contact/
-      weight: 400
+    - identifier: cv
+      name: CV
+      url: /cv/
+      weight: 500
