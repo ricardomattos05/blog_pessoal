@@ -55,5 +55,5 @@ menu:
       weight: 300
     - identifier: cv
       name: CV
-      url: /cv/
+      url: https://ricardomattos05.github.io/Resume/cv.html
       weight: 500
